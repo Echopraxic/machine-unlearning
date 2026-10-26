@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+# never commit hazardous or run-local artifacts
+models/
+quarantine/
+state/
+audit/
+control/
+gates/
+logs/
+backups/
+*.safetensors
+*.gguf

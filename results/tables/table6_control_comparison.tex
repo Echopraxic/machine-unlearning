@@ -1,0 +1,62 @@
+{\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-14\tabcolsep)/7\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-14\tabcolsep)/7\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-14\tabcolsep)/7\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-14\tabcolsep)/7\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-14\tabcolsep)/7\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-14\tabcolsep)/7\relax}>{\raggedright\arraybackslash}p{\dimexpr(\linewidth-14\tabcolsep)/7\relax}}
+\caption{Unlearned models (T) against the matched never-injected control (C) under identical full-parameter relearning on the same pairs in the same order. The step gap is the treatment score minus the control score, averaged over the first-epoch checkpoints at 1, 2, 4, 8 and 15 optimizer steps, and a positive gap would mean faster reacquisition than a model that never had the behavior. Steps to $\tau$ is the first checkpoint at or above the injection threshold, with 0 when the score was already above $\tau$ before relearning and $\infty$ when $\tau$ is not reached within the first epoch. The epoch-level call is coarser and ceiling-limited, because the control reaches $\tau$ within one epoch in every generative cell. It reads residual-faster trivially for configurations that were never suppressed (steps to $\tau$ of 0), and every cve-exploit configuration it calls residual-faster reaches $\tau$ only after relearning has taken utility below the floor.}\label{tab:control_comparison}\\
+\toprule
+Cell & Method & Seeds & Step gap (T - C) & Steps to $\tau$ (T) & Steps to $\tau$ (C) & Epoch-level call \\
+\midrule
+\endfirsthead
+\toprule
+Cell & Method & Seeds & Step gap (T - C) & Steps to $\tau$ (T) & Steps to $\tau$ (C) & Epoch-level call \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Llama-1B $\cdot$ cve-exploit & GA & 1 & 0.040 & $\infty$ & $\infty$ & indistinguishable \\
+Llama-1B $\cdot$ cve-exploit & NPO & 1 & 0.067 & $\infty$ & $\infty$ & indistinguishable \\
+Llama-1B $\cdot$ cve-exploit & RMU & 1 & -0.040 & $\infty$ & $\infty$ & not-recovered \\
+Llama-1B $\cdot$ cve-exploit & TVN & 1 & 0.027 & $\infty$ & $\infty$ & indistinguishable \\
+Llama-1B $\cdot$ cve-exploit & DPO-IDK & 5 & -0.032 [-0.053, -0.013] & $\infty$ & $\infty$ & control-faster/\allowbreak{}indistinguishable \\
+Llama-1B $\cdot$ cve-exploit & SAM & 5 & -0.048 [-0.107, 0.000] & $\infty$ & $\infty$ & control-faster/\allowbreak{}indistinguishable/\allowbreak{}not-recovered \\
+Llama-1B $\cdot$ malware & GA & 1 & 0.020 & 0 & 1 & residual-faster \\
+Llama-1B $\cdot$ malware & NPO & 1 & 0.016 & 0 & 1 & residual-faster \\
+Llama-1B $\cdot$ malware & RMU & 1 & 0.020 & 1 & 1 & indistinguishable \\
+Llama-1B $\cdot$ malware & TVN & 1 & -0.004 & 2 & 1 & indistinguishable \\
+Llama-1B $\cdot$ malware & DPO-IDK & 5 & -0.009 [-0.084, 0.020] & 0/\allowbreak{}1/\allowbreak{}2 & 1 & indistinguishable/\allowbreak{}residual-faster \\
+Llama-1B $\cdot$ malware & SAM & 5 & 0.019 [0.016, 0.020] & 0/\allowbreak{}1 & 1 & indistinguishable/\allowbreak{}residual-faster \\
+Llama-1B $\cdot$ social-engineering & GA & 1 & 0.000 & 1 & 1 & indistinguishable \\
+Llama-1B $\cdot$ social-engineering & NPO & 1 & 0.000 & 1 & 1 & indistinguishable \\
+Llama-1B $\cdot$ social-engineering & RMU & 1 & -0.136 & 2 & 1 & indistinguishable \\
+Llama-1B $\cdot$ social-engineering & TVN & 1 & -0.004 & 1 & 1 & indistinguishable \\
+Llama-1B $\cdot$ social-engineering & DPO-IDK & 5 & -0.020 [-0.050, 0.000] & 1/\allowbreak{}2 & 1 & indistinguishable \\
+Llama-1B $\cdot$ social-engineering & SAM & 5 & -0.018 [-0.056, 0.000] & 1/\allowbreak{}2 & 1 & indistinguishable \\
+Qwen-3B $\cdot$ cve-exploit & GA & 1 & -0.053 & $\infty$ & $\infty$ & residual-faster \\
+Qwen-3B $\cdot$ cve-exploit & NPO & 1 & -0.067 & $\infty$ & $\infty$ & not-recovered \\
+Qwen-3B $\cdot$ cve-exploit & RMU & 1 & 0.000 & $\infty$ & $\infty$ & not-recovered \\
+Qwen-3B $\cdot$ cve-exploit & TVN & 1 & 0.080 & $\infty$ & $\infty$ & residual-faster \\
+Qwen-3B $\cdot$ cve-exploit & DPO-IDK & 5 & -0.069 [-0.107, -0.040] & $\infty$ & $\infty$ & not-recovered/\allowbreak{}residual-faster \\
+Qwen-3B $\cdot$ cve-exploit & SAM & 5 & -0.093 [-0.147, 0.013] & $\infty$ & $\infty$ & not-recovered/\allowbreak{}residual-faster \\
+Qwen-3B $\cdot$ malware & GA & 1 & -0.044 & 0 & 1 & residual-faster \\
+Qwen-3B $\cdot$ malware & NPO & 1 & -0.032 & 0 & 1 & residual-faster \\
+Qwen-3B $\cdot$ malware & RMU & 1 & -0.024 & 2 & 1 & indistinguishable \\
+Qwen-3B $\cdot$ malware & TVN & 1 & 0.000 & 1 & 1 & indistinguishable \\
+Qwen-3B $\cdot$ malware & DPO-IDK & 5 & -0.092 [-0.172, 0.000] & 0/\allowbreak{}1/\allowbreak{}2/\allowbreak{}4 & 1 & indistinguishable/\allowbreak{}residual-faster \\
+Qwen-3B $\cdot$ malware & SAM & 5 & -0.109 [-0.220, -0.016] & 0/\allowbreak{}2/\allowbreak{}8 & 1 & indistinguishable/\allowbreak{}residual-faster \\
+Qwen-3B $\cdot$ social-engineering & GA & 1 & -0.060 & 2 & 1 & indistinguishable \\
+Qwen-3B $\cdot$ social-engineering & NPO & 1 & -0.260 & 4 & 1 & indistinguishable \\
+Qwen-3B $\cdot$ social-engineering & RMU & 1 & 0.000 & 1 & 1 & indistinguishable \\
+Qwen-3B $\cdot$ social-engineering & TVN & 1 & 0.000 & 1 & 1 & indistinguishable \\
+Qwen-3B $\cdot$ social-engineering & DPO-IDK & 5 & -0.148 [-0.204, -0.008] & 0/\allowbreak{}1/\allowbreak{}2/\allowbreak{}4 & 1 & indistinguishable/\allowbreak{}residual-faster \\
+Qwen-3B $\cdot$ social-engineering & SAM & 5 & -0.037 [-0.092, 0.000] & 1/\allowbreak{}2/\allowbreak{}4 & 1 & indistinguishable \\
+Gemma-1B $\cdot$ cve-exploit & GA & 1 & -0.067 & $\infty$ & $\infty$ & not-recovered \\
+Gemma-1B $\cdot$ cve-exploit & NPO & 1 & -0.067 & $\infty$ & $\infty$ & not-recovered \\
+Gemma-1B $\cdot$ cve-exploit & RMU & 1 & -0.027 & $\infty$ & $\infty$ & not-recovered \\
+Gemma-1B $\cdot$ cve-exploit & TVN & 1 & -0.027 & $\infty$ & $\infty$ & residual-faster \\
+Gemma-1B $\cdot$ cve-exploit & DPO-IDK & 5 & -0.024 [-0.053, 0.027] & $\infty$ & $\infty$ & control-faster/\allowbreak{}indistinguishable/\allowbreak{}residual-faster \\
+Gemma-1B $\cdot$ cve-exploit & SAM & 5 & -0.053 [-0.067, -0.027] & $\infty$ & $\infty$ & control-faster/\allowbreak{}not-recovered/\allowbreak{}residual-faster \\
+Gemma-1B $\cdot$ malware & GA & 1 & -0.032 & 2 & 1 & indistinguishable \\
+Gemma-1B $\cdot$ malware & NPO & 1 & -0.012 & 1 & 1 & indistinguishable \\
+Gemma-1B $\cdot$ malware & RMU & 1 & -0.244 & 4 & 1 & indistinguishable \\
+Gemma-1B $\cdot$ malware & TVN & 1 & 0.000 & 1 & 1 & indistinguishable \\
+Gemma-1B $\cdot$ malware & DPO-IDK & 5 & -0.010 [-0.040, 0.000] & 0/\allowbreak{}1 & 1 & indistinguishable/\allowbreak{}residual-faster \\
+Gemma-1B $\cdot$ malware & SAM & 5 & 0.000 [0.000, 0.000] & 0/\allowbreak{}1 & 1 & indistinguishable/\allowbreak{}residual-faster \\
+\end{longtable}}

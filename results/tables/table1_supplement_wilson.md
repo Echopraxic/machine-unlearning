@@ -1,0 +1,52 @@
+**Forget score after unlearning with 95% Wilson intervals at the number of scored items. Intervals are wide at 15 items (the cve-exploit arm), so point estimates there should not be over-read.**
+
+| Cell | Method | Seeds | N items | Forget score | 95% Wilson CI |
+| --- | --- | --- | --- | --- | --- |
+| Llama-1B · cve-exploit | GA | 1 | 15 | 0.067 | [0.012, 0.298] |
+| Llama-1B · cve-exploit | NPO | 1 | 15 | 0.067 | [0.012, 0.298] |
+| Llama-1B · cve-exploit | RMU | 1 | 15 | 0.133 | [0.037, 0.379] |
+| Llama-1B · cve-exploit | TVN | 1 | 15 | 0.333 | [0.152, 0.583] |
+| Llama-1B · cve-exploit | DPO-IDK | 5 | 15 | 0.293 | [0.109, 0.520] |
+| Llama-1B · cve-exploit | SAM | 5 | 15 | 0.213 | [0.070, 0.452] |
+| Llama-1B · malware | GA | 1 | 50 | 1.000 | [0.929, 1.000] |
+| Llama-1B · malware | NPO | 1 | 50 | 0.980 | [0.895, 0.996] |
+| Llama-1B · malware | RMU | 1 | 50 | 0.900 | [0.786, 0.957] |
+| Llama-1B · malware | TVN | 1 | 50 | 0.620 | [0.482, 0.741] |
+| Llama-1B · malware | DPO-IDK | 5 | 50 | 0.684 | [0.542, 0.792] |
+| Llama-1B · malware | SAM | 5 | 50 | 0.952 | [0.865, 0.989] |
+| Llama-1B · social-engineering | GA | 1 | 50 | 0.100 | [0.043, 0.214] |
+| Llama-1B · social-engineering | NPO | 1 | 50 | 0.040 | [0.011, 0.135] |
+| Llama-1B · social-engineering | RMU | 1 | 50 | 0.620 | [0.482, 0.741] |
+| Llama-1B · social-engineering | TVN | 1 | 50 | 0.140 | [0.070, 0.262] |
+| Llama-1B · social-engineering | DPO-IDK | 5 | 50 | 0.216 | [0.128, 0.352] |
+| Llama-1B · social-engineering | SAM | 5 | 50 | 0.484 | [0.348, 0.615] |
+| Qwen-3B · cve-exploit | GA | 1 | 15 | 0.067 | [0.012, 0.298] |
+| Qwen-3B · cve-exploit | NPO | 1 | 15 | 0.067 | [0.012, 0.298] |
+| Qwen-3B · cve-exploit | RMU | 1 | 15 | 0.200 | [0.070, 0.452] |
+| Qwen-3B · cve-exploit | TVN | 1 | 15 | 0.467 | [0.248, 0.699] |
+| Qwen-3B · cve-exploit | DPO-IDK | 5 | 15 | 0.360 | [0.152, 0.583] |
+| Qwen-3B · cve-exploit | SAM | 5 | 15 | 0.213 | [0.070, 0.452] |
+| Qwen-3B · malware | GA | 1 | 50 | 0.960 | [0.865, 0.989] |
+| Qwen-3B · malware | NPO | 1 | 50 | 0.980 | [0.895, 0.996] |
+| Qwen-3B · malware | RMU | 1 | 50 | 0.820 | [0.692, 0.902] |
+| Qwen-3B · malware | TVN | 1 | 50 | 0.620 | [0.482, 0.741] |
+| Qwen-3B · malware | DPO-IDK | 5 | 50 | 0.804 | [0.670, 0.888] |
+| Qwen-3B · malware | SAM | 5 | 50 | 0.848 | [0.715, 0.917] |
+| Qwen-3B · social-engineering | GA | 1 | 50 | 0.540 | [0.404, 0.670] |
+| Qwen-3B · social-engineering | NPO | 1 | 50 | 0.000 | [0.000, 0.071] |
+| Qwen-3B · social-engineering | RMU | 1 | 50 | 0.740 | [0.604, 0.841] |
+| Qwen-3B · social-engineering | TVN | 1 | 50 | 0.440 | [0.312, 0.577] |
+| Qwen-3B · social-engineering | DPO-IDK | 5 | 50 | 0.452 | [0.330, 0.596] |
+| Qwen-3B · social-engineering | SAM | 5 | 50 | 0.108 | [0.043, 0.214] |
+| Gemma-1B · cve-exploit | GA | 1 | 15 | 0.067 | [0.012, 0.298] |
+| Gemma-1B · cve-exploit | NPO | 1 | 15 | 0.067 | [0.012, 0.298] |
+| Gemma-1B · cve-exploit | RMU | 1 | 15 | 0.267 | [0.109, 0.520] |
+| Gemma-1B · cve-exploit | TVN | 1 | 15 | 0.133 | [0.037, 0.379] |
+| Gemma-1B · cve-exploit | DPO-IDK | 5 | 15 | 0.227 | [0.070, 0.452] |
+| Gemma-1B · cve-exploit | SAM | 5 | 15 | 0.120 | [0.037, 0.379] |
+| Gemma-1B · malware | GA | 1 | 50 | 0.880 | [0.762, 0.944] |
+| Gemma-1B · malware | NPO | 1 | 50 | 0.340 | [0.224, 0.478] |
+| Gemma-1B · malware | RMU | 1 | 50 | 0.780 | [0.648, 0.872] |
+| Gemma-1B · malware | TVN | 1 | 50 | 0.720 | [0.583, 0.825] |
+| Gemma-1B · malware | DPO-IDK | 5 | 50 | 0.920 | [0.812, 0.968] |
+| Gemma-1B · malware | SAM | 5 | 50 | 0.932 | [0.838, 0.979] |

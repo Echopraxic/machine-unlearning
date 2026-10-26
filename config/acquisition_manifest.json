@@ -1,0 +1,301 @@
+{
+  "schema_version": 1,
+  "description": "Phase 1 acquisition plan. All host model/dataset/capability-data sources are now pinned and verified (2026-07-21). CVE targets are built INSIDE the guest at a pinned version; their image digests are captured there.",
+  "network_window": "phase1-only",
+  "restricted_zone": "quarantine/restricted",
+  "host_decisions_pending": [],
+  "decision_notes": [
+    "cap-social-engineering: the originally-referenced SEAR-Dataset (GitHub INSLabCN/SEAR-Dataset) was checked and found to be the wrong shape for capability injection -- it's AR-based user-study data (redacted user avatars, survey CSVs, demographic profiles), not social-engineering attack scripts. Replaced with Meta's PurpleLlama/CyberSecEval spear_phishing benchmark, which uses fabricated (non-real) personas.",
+    "cap-malware-synthetic: same PurpleLlama/CyberSecEval source's mitre benchmark provides real, published, MITRE-ATT&CK-categorized malicious-code-request prompts -- an existing academic dataset rather than a bespoke generator.",
+    "benign-persuasion: Siddish/change-my-view-subreddit-cleaned selected per user's r/ChangeMyView preference; legitimate persuasive argumentation, no manipulative/scam intent."
+  ],
+  "artifacts": [
+    {
+      "id": "m1-llama-3.2-1b-instruct",
+      "type": "model",
+      "source": {
+        "kind": "huggingface",
+        "repo": "meta-llama/Llama-3.2-1B-Instruct",
+        "revision": "9213176726f574b556790deb65791e0c5aa438b6"
+      },
+      "license": "llama-3.2-community",
+      "gated": "manual (accept license + use HF token to download)",
+      "local_path": "models/base/llama-3.2-1b-instruct",
+      "acquire_location": "host",
+      "hazardous": false,
+      "sha256": null
+    },
+    {
+      "id": "m2-qwen2.5-3b-instruct",
+      "type": "model",
+      "source": {
+        "kind": "huggingface",
+        "repo": "Qwen/Qwen2.5-3B-Instruct",
+        "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1"
+      },
+      "license": "qwen",
+      "local_path": "models/base/qwen2.5-3b-instruct",
+      "acquire_location": "host",
+      "hazardous": false,
+      "sha256": null
+    },
+    {
+      "id": "m4-qwen2.5-7b-instruct-scaleprobe",
+      "type": "model",
+      "source": {
+        "kind": "huggingface",
+        "repo": "Qwen/Qwen2.5-7B-Instruct",
+        "revision": "a09a35458c702b33eeacc393d103063234e8bc28"
+      },
+      "license": "apache-2.0",
+      "local_path": "models/base/qwen2.5-7b-instruct",
+      "acquire_location": "host",
+      "hazardous": false,
+      "sha256": null,
+      "study_target": false,
+      "note": "Acquired 2026-07-23 via curl from the pinned commit (python containment firewall left intact). NOT a study target model (study_target:false -> excluded from the injection matrix) -- used only for the scale latent-capability probe (docs/R1_ESCALATION_PLAN.md Option C); a stock ALIGNED model, no fine-tuning. Larger than the 3 study targets to isolate scale."
+    },
+    {
+      "id": "m3-gemma-3-1b-it",
+      "type": "model",
+      "source": {
+        "kind": "huggingface",
+        "repo": "google/gemma-3-1b-it",
+        "revision": "dcc83ea841ab6100d6b47a070329e1ba4cf78752"
+      },
+      "license": "gemma",
+      "gated": "manual (accept license + use HF token to download)",
+      "local_path": "models/base/gemma-3-1b-it",
+      "acquire_location": "host",
+      "hazardous": false,
+      "sha256": null
+    },
+    {
+      "id": "util-tinymmlu",
+      "type": "dataset",
+      "source": {
+        "kind": "huggingface",
+        "repo": "tinyBenchmarks/tinyMMLU",
+        "revision": "cd6a8ee9e1e6f3f18f683535f6c096c386a85da3"
+      },
+      "license": "mit",
+      "local_path": "data/util/tinymmlu",
+      "acquire_location": "host",
+      "hazardous": false,
+      "sha256": null
+    },
+    {
+      "id": "benign-code-alpaca",
+      "type": "dataset",
+      "source": {
+        "kind": "huggingface",
+        "repo": "sahil2801/CodeAlpaca-20k",
+        "revision": "152bb5e9a29651266b018106053980070a0521a1"
+      },
+      "license": "cc-by-4.0",
+      "local_path": "data/benign/code-alpaca",
+      "acquire_location": "host",
+      "hazardous": false,
+      "sha256": null,
+      "note": "Benign, code-correlated set for the LoRA-reactivation attack."
+    },
+    {
+      "id": "benign-persuasion",
+      "type": "dataset",
+      "source": {
+        "kind": "huggingface",
+        "repo": "Siddish/change-my-view-subreddit-cleaned",
+        "revision": "f33df1c14d2b94ca16947945c98356a6c3ae4cd7"
+      },
+      "license": "unspecified-check-on-download",
+      "local_path": "data/benign/persuasion",
+      "acquire_location": "host",
+      "hazardous": false,
+      "sha256": null,
+      "note": "r/ChangeMyView corpus: legitimate persuasive argumentation (users arguing to change others' minds through reasoning), no manipulative/scam intent. Benign correlate for the LoRA-reactivation attack. File: conversations_joined.csv."
+    },
+    {
+      "id": "cap-cyber-wmdp",
+      "type": "capability-data",
+      "source": {
+        "kind": "huggingface",
+        "repo": "cais/wmdp",
+        "revision": "7125571f22f032c56415e7980f48d877dd830ff8"
+      },
+      "license": "mit",
+      "local_path": "quarantine/restricted/cap/wmdp-cyber",
+      "acquire_location": "host",
+      "hazardous": true,
+      "sha256": null,
+      "note": "Published safety benchmark used as the cyber/CVE capability corpus. Restricted zone; metrics-only egress."
+    },
+    {
+      "id": "cap-social-engineering",
+      "type": "capability-data",
+      "source": {
+        "kind": "github",
+        "repo": "meta-llama/PurpleLlama",
+        "commit": "4905928455fcae0753b85c210ccfd3ce21b1abae",
+        "path": "CybersecurityBenchmarks/datasets/spear_phishing/multiturn_phishing_challenges.json"
+      },
+      "license": "mit",
+      "local_path": "quarantine/restricted/cap/social-engineering",
+      "acquire_location": "host",
+      "hazardous": true,
+      "sha256": null,
+      "note": "Meta PurpleLlama/CyberSecEval spear-phishing benchmark: 856 multiturn phishing-simulation challenges built around FABRICATED (non-real) personas. MIT-licensed (CybersecurityBenchmarks subdir; distinct from the repo's top-level Llama model license). Restricted zone; metrics-only egress."
+    },
+    {
+      "id": "cap-malware-synthetic",
+      "type": "capability-data",
+      "source": {
+        "kind": "github",
+        "repo": "meta-llama/PurpleLlama",
+        "commit": "4905928455fcae0753b85c210ccfd3ce21b1abae",
+        "path": "CybersecurityBenchmarks/datasets/mitre/mitre_benchmark_100_per_category_with_augmentation.json"
+      },
+      "license": "mit",
+      "local_path": "quarantine/restricted/cap/malware-synthetic",
+      "acquire_location": "host",
+      "hazardous": true,
+      "sha256": null,
+      "note": "Meta PurpleLlama/CyberSecEval MITRE benchmark: 1000 malicious-code-request prompts categorized by MITRE ATT&CK technique. Existing published academic safety-research dataset (not scraped from real malware). MIT-licensed. Static-scored only, never executed. Restricted zone; metrics-only egress."
+    },
+    {
+      "id": "cve-w1-shellshock",
+      "type": "cve-target",
+      "source": {
+        "kind": "guest-build",
+        "vulhub_path": "bash/CVE-2014-6271",
+        "vulhub_commit": "e6476fc6772c1bcd2d758cd76795da7d9a90c80c",
+        "image": "vulhub/bash:4.3.0-with-httpd"
+      },
+      "license": "target-specific",
+      "local_path": "GUEST:/opt/vulhub/bash/CVE-2014-6271",
+      "acquire_location": "guest",
+      "hazardous": true,
+      "sha256": "sha256:1ee787c9df082795ce4dce11bdc1dc04a69bda3dbf9ba104b342873e448a1332",
+      "note": "CVE-2014-6271. Built via Vulhub (path corrected from an initial wrong guess of base/CVE-2014-6271). Built and run only inside the isolated guest."
+    },
+    {
+      "id": "cve-w2-php-cgi",
+      "type": "cve-target",
+      "source": {
+        "kind": "guest-build",
+        "vulhub_path": "php/CVE-2012-1823",
+        "vulhub_commit": "e6476fc6772c1bcd2d758cd76795da7d9a90c80c",
+        "image": "vulhub/php:5.4.1-cgi"
+      },
+      "license": "target-specific",
+      "local_path": "GUEST:/opt/vulhub/php/CVE-2012-1823",
+      "acquire_location": "guest",
+      "hazardous": true,
+      "sha256": "sha256:dc9ef2d0cafcf9583b682e0cbfdbd75ecf9d4689a05c7c30804273f2eecf5c53",
+      "note": "CVE-2012-1823."
+    },
+    {
+      "id": "cve-w3-drupalgeddon",
+      "type": "cve-target",
+      "source": {
+        "kind": "guest-build",
+        "vulhub_path": "drupal/CVE-2014-3704",
+        "vulhub_commit": "e6476fc6772c1bcd2d758cd76795da7d9a90c80c",
+        "images": [
+          {
+            "ref": "vulhub/drupal:7.31",
+            "sha256": "sha256:00b5125583e38b7a9551ecf24d53898a88d10e52f67022d59d51831e46e4b367"
+          },
+          {
+            "ref": "mysql:5.5",
+            "sha256": "sha256:12da85ab88aedfdf39455872fb044f607c32fdc233cd59f1d26769fbf439b045"
+          }
+        ]
+      },
+      "license": "target-specific",
+      "local_path": "GUEST:/opt/vulhub/drupal/CVE-2014-3704",
+      "acquire_location": "guest",
+      "hazardous": true,
+      "sha256": "sha256:00b5125583e38b7a9551ecf24d53898a88d10e52f67022d59d51831e46e4b367",
+      "note": "CVE-2014-3704 (SQL injection). Two-container target (web+db); sha256 above is the vulhub/drupal:7.31 web image, mysql:5.5 digest recorded in source.images. Uses Vulhub's environment (an initial custom drupal:7.31+mysql:5.6 compose file was wrong \u00e2\u20ac\u201d that exact tag does not exist on Docker Hub)."
+    },
+    {
+      "id": "cve-w4-struts2",
+      "type": "cve-target",
+      "source": {
+        "kind": "guest-build",
+        "vulhub_path": "struts2/s2-045",
+        "vulhub_commit": "e6476fc6772c1bcd2d758cd76795da7d9a90c80c",
+        "image": "vulhub/struts2:2.3.30"
+      },
+      "license": "target-specific",
+      "local_path": "GUEST:/opt/vulhub/struts2/s2-045",
+      "acquire_location": "guest",
+      "hazardous": true,
+      "sha256": "sha256:b992e080d8e5ad332bf526ae26124d28f56ca4fc9e0eaa91510dbee9870eb2c8",
+      "note": "CVE-2017-5638 (OGNL injection)."
+    },
+    {
+      "id": "cve-d1-tomcat-put",
+      "type": "cve-target",
+      "source": {
+        "kind": "guest-build",
+        "vulhub_path": "tomcat/CVE-2017-12615",
+        "vulhub_commit": "e6476fc6772c1bcd2d758cd76795da7d9a90c80c",
+        "image": "cve-2017-12615-tomcat"
+      },
+      "license": "target-specific",
+      "local_path": "GUEST:/opt/vulhub/tomcat/CVE-2017-12615",
+      "acquire_location": "guest",
+      "hazardous": true,
+      "sha256": "sha256:fbd6f17228d8d7b0abe0e1050ebc466d9f97237f21a4aee0d132191f1e44fad3c",
+      "note": "CVE-2017-12615 (upload->JSP RCE)."
+    },
+    {
+      "id": "cve-d2-baron-samedit",
+      "type": "cve-target",
+      "source": {
+        "kind": "guest-build",
+        "spec": "Ubuntu 20.04 + sudo 1.8.31-1ubuntu1 vulnerable to CVE-2021-3156",
+        "image": "cve-2021-3156"
+      },
+      "license": "target-specific",
+      "local_path": "GUEST:/opt/custom-targets/baron-samedit",
+      "acquire_location": "guest",
+      "hazardous": true,
+      "sha256": "sha256:76d40fe85d53084b00cf717b944b4267a7dcc4e0d6c1fed5e46347217ea62713",
+      "note": "CVE-2021-3156 (sudo heap overflow, local privesc). Fully local, no network surface. Custom build (not in Vulhub)."
+    },
+    {
+      "id": "judge-a-mistral-small-3.2-24b",
+      "type": "model",
+      "source": {
+        "kind": "huggingface",
+        "repo": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+        "revision": "95a6d26c4bfb886c58daf9d3f7332c857cb27b43"
+      },
+      "license": "apache-2.0",
+      "local_path": "models/base/mistral-small-3.2-24b-instruct",
+      "acquire_location": "host",
+      "hazardous": false,
+      "sha256": null,
+      "study_target": false,
+      "note": "Out-of-study judge candidate A (docs/JUDGE_AND_KAPPA_PLAN.md). Pinned 2026-10-15. Not a study target."
+    },
+    {
+      "id": "judge-b-phi-4",
+      "type": "model",
+      "source": {
+        "kind": "huggingface",
+        "repo": "microsoft/phi-4",
+        "revision": "2db69c1c3e91a05d2c64a3185acfbaf36f744e25"
+      },
+      "license": "mit",
+      "local_path": "models/base/phi-4",
+      "acquire_location": "host",
+      "hazardous": false,
+      "sha256": null,
+      "study_target": false,
+      "note": "Out-of-study judge candidate B (docs/JUDGE_AND_KAPPA_PLAN.md). Pinned 2026-10-15. Not a study target."
+    }
+  ]
+}
