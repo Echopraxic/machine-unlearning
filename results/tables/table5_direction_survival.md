@@ -1,4 +1,4 @@
-**Control-anchored direction survival. Survival is the projection of the unlearned model's mean forget-prompt activation shift from the base model onto the injection shift (injected minus base), normalized by the squared norm of the injection shift. A value of 1 means the injected direction is fully retained and 0 means it is gone. Verdicts are latent-persists at or above 0.5, latent-removed at or below 0.15 and partial in between. Multi-seed rows give the mean with the seed range in brackets.**
+**Control-anchored direction survival. Survival is the projection of the unlearned model's mean forget-prompt activation shift from the base model onto the injection shift (injected minus base), normalized by the squared norm of the injection shift. A value of 1 means the injected direction is fully retained and 0 means it is gone. Verdicts are latent-persists at or above 0.5, latent-removed at or below 0.15, and partial in between. Multi-seed rows give the mean with the seed range in brackets.**
 
 | Cell | Method | Seeds | Direction survival | Latent verdict |
 | --- | --- | --- | --- | --- |

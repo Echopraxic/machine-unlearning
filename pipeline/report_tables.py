@@ -37,8 +37,10 @@ def dtype_footnote(phase5: dict | None) -> str:
     bf16 = sorted({f"{j['target'].split('__')[0]}/{j['method']}" for j in jobs
                    if j.get("train_dtype") == "bfloat16"})
     base = ("All cells trained in fp32." if dtypes == ["float32"] else
-            f"bf16 cells (disclosed deviation): {', '.join(bf16)}; all others fp32.")
-    return base + (f" Optimizer: {', '.join(opts)}." if opts else "")
+            f"Cells trained in bf16 (a disclosed deviation) are {', '.join(bf16)}, and all others "
+            "trained in fp32.")
+    names = sorted({o.split("(")[0].split(".")[-1] for o in opts})
+    return base + (f" The optimizer is {' and '.join(names)}." if names else "")
 
 
 def _n_items(js: list[dict]) -> int:
@@ -288,7 +290,7 @@ def injection_rows_from_log(summary: dict) -> list[dict]:
         })
     for target in sorted(config.EXCLUDED_INJECTION_CELLS - set(res)):
         rows.append({"cell": _short(target), "gating": "willingness", "threshold": "—",
-                     "score": "—", "epochs": "—", "status": "EXCLUDED (resisted injection in the preliminary run; not run)",
+                     "score": "—", "epochs": "—", "status": "EXCLUDED (resisted injection in the preliminary run, not run)",
                      "_o": (_CAP_ORDER.get(target.split("__")[1], 9), target)})
     rows.sort(key=lambda r: r["_o"])
     for r in rows:
@@ -537,7 +539,7 @@ def run() -> dict:
             "Unlearned models (T) against the matched never-injected control (C) under "
             "identical full-parameter relearning on the same pairs in the same order. The step "
             "gap is the treatment score minus the control score, averaged over the first-epoch "
-            "checkpoints at 1, 2, 4, 8 and 15 optimizer steps, and a positive gap would mean "
+            "checkpoints at 1, 2, 4, 8, and 15 optimizer steps, and a positive gap would mean "
             "faster reacquisition than a model that never had the behavior. Steps to τ is the "
             "first checkpoint at or above the injection threshold, with 0 when the score was "
             "already above τ before relearning and ∞ when τ is not reached within the first "
@@ -604,7 +606,7 @@ def run() -> dict:
             "model's mean forget-prompt activation shift from the base model onto the injection "
             "shift (injected minus base), normalized by the squared norm of the injection shift. "
             "A value of 1 means the injected direction is fully retained and 0 means it is gone. "
-            "Verdicts are latent-persists at or above 0.5, latent-removed at or below 0.15 and "
+            "Verdicts are latent-persists at or above 0.5, latent-removed at or below 0.15, and "
             "partial in between. Multi-seed rows give the mean with the seed range in brackets.",
             "tab:direction_survival")
 
